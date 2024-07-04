@@ -52,7 +52,9 @@ def send_screenshot(server_ip):
     try:
       print("Sending screenshot to server...")
       response = send_local_ip_to_server(image_data)
+     
       print(response)
+
     except ConnectionRefusedError:
         print("Failed to connect to the server. Make sure the server is running.")
 

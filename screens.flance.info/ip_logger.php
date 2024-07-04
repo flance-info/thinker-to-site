@@ -12,22 +12,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 // Handle POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if 'local_ip' is provided in the POST data
-    if (isset($_POST['local_ip'])) {
-        $localIP = $_POST['local_ip'];
-        $logEntry = "Received IP: $localIP at " . date('Y-m-d H:i:s') . "\n";
+    // Check if a file was uploaded
+    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['file']['tmp_name'];
+        $fileName = $_FILES['file']['name'];
+        $uploadFileDir = './uploads/';
+        $destFilePath = $uploadFileDir . $fileName;
 
-        // Append the log entry to the log file
-        file_put_contents($logFile, $logEntry, FILE_APPEND);
-
-        // Respond with a success message
-        header('Content-Type: application/json');
-        echo json_encode(['message' => "IP address received: $localIP"]);
+        // Move the uploaded file to the uploads directory
+        if (move_uploaded_file($fileTmpPath, $destFilePath)) {
+            // Respond with a success message
+            header('Content-Type: application/json');
+            echo json_encode(['message' => "File uploaded successfully: $fileName"]);
+        } else {
+            // Respond with an error message
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['message' => 'Failed to upload file.']);
+        }
     } else {
         // Respond with an error message
         header('Content-Type: application/json');
         http_response_code(400);
-        echo json_encode(['message' => 'No IP address provided.']);
+        echo json_encode(['message' => 'No file provided.']);
     }
 }
 ?>
