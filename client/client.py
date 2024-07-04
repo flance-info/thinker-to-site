@@ -5,6 +5,8 @@ from io import BytesIO
 import keyboard
 import time
 import struct
+import requests
+from server.utils import get_local_ip
 
 def discover_server_ip():
     discovery_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
