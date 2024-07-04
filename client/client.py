@@ -6,7 +6,7 @@ import keyboard
 import time
 import struct
 import requests
-from server.utils import get_local_ip
+from send import send_local_ip_to_server
 
 def discover_server_ip():
     discovery_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -50,16 +50,19 @@ def send_screenshot(server_ip):
     buffer.close()
 
     try:
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((server_ip, 12345))
-        client_socket.sendall(image_data)
-        client_socket.close()
-        print("Screenshot sent!")
+      #  client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      #  client_socket.connect((server_ip, 12345))
+      #  client_socket.sendall(image_data)
+      #  client_socket.close()
+      # Send the screenshot to the server using the send_site function
+      print("Sending screenshot to server...")
+      response = send_local_ip_to_server(image_data)
+      print(response)
     except ConnectionRefusedError:
         print("Failed to connect to the server. Make sure the server is running.")
 
 if __name__ == "__main__":
-    print("Discovering server...")
+
     ##server_ip = discover_server_ip()
     server_ip = "192.168.1.236"
     print("Press Alt + Print Screen to send a screenshot from clipboard")

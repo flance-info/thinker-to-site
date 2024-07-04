@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]
+
+ProxyPass / http://localhost:8000/
+ProxyPassReverse / http://localhost:8000/
