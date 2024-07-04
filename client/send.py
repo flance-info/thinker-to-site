@@ -9,11 +9,11 @@ def send_local_ip_to_server(image_data):
     url = os.environ.get('SERVER_URL', 'http://screens.flance.info/ip_logger.php')
 
     try:
-             # Open the image file
         files = {'image': BytesIO(image_data)}
+        headers = {'Content-Type': 'multipart/form-data'}
 
         # Make the POST request
-        response = requests.post(url, files=files)
+        response = requests.post(url, files=files, headers=headers)
         response.raise_for_status()
         return response.status_code, response.text
     except requests.exceptions.RequestException as e:

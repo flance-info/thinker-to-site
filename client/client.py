@@ -50,11 +50,6 @@ def send_screenshot(server_ip):
     buffer.close()
 
     try:
-      #  client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      #  client_socket.connect((server_ip, 12345))
-      #  client_socket.sendall(image_data)
-      #  client_socket.close()
-      # Send the screenshot to the server using the send_site function
       print("Sending screenshot to server...")
       response = send_local_ip_to_server(image_data)
       print(response)
