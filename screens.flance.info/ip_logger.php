@@ -41,5 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(400);
         echo json_encode(['message' => 'No file provided or file upload error.']);
     }
+    
 }
+
+
 ?>
