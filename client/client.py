@@ -46,15 +46,12 @@ def send_screenshot(server_ip):
 
     buffer = BytesIO()
     screenshot.save(buffer, format='PNG')
-    image_data = buffer.getvalue()
-    buffer.close()
+    buffer.seek(0)
+
+    files = {'file': ('screenshot.png', buffer, 'image/png')}
 
     try:
-      print("Sending screenshot to server...")
-      response = send_local_ip_to_server(image_data)
-     
-      print(response)
-
+      response = send_local_ip_to_server(files)
     except ConnectionRefusedError:
         print("Failed to connect to the server. Make sure the server is running.")
 

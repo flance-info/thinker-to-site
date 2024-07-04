@@ -15,9 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if a file was uploaded
     if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['file']['tmp_name'];
-        $fileName = $_FILES['file']['name'];
+        $fileName = basename($_FILES['file']['name']);
         $uploadFileDir = './uploads/';
         $destFilePath = $uploadFileDir . $fileName;
+
+        // Create the uploads directory if it doesn't exist
+        if (!file_exists($uploadFileDir)) {
+            mkdir($uploadFileDir, 0777, true);
+        }
 
         // Move the uploaded file to the uploads directory
         if (move_uploaded_file($fileTmpPath, $destFilePath)) {
@@ -34,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Respond with an error message
         header('Content-Type: application/json');
         http_response_code(400);
-        echo json_encode(['message' => 'No file provided.']);
+        echo json_encode(['message' => 'No file provided or file upload error.']);
     }
 }
 ?>
